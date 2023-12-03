@@ -1,0 +1,107 @@
+<!-- store/templates/base_generic.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Food Store{% endblock %}</title>
+    <style>
+        /* Ваши стили CSS здесь */
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            animation: shadowAnimation 0.5s ease-in-out;
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0); /* Градиентный фон */
+        }
+
+        header {
+            background-color: #333;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень под шапкой */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            transition: color 0.3s ease, transform 0.2s ease; /* Добавлен эффект при наведении */
+        }
+
+        nav a:hover {
+            color: #ff4500;
+            transform: scale(1.1); /* Небольшой масштаб при наведении */
+        }
+
+        main {
+            flex: 1;
+            animation: backgroundAnimation 1s ease-in-out;
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+            color: #fff;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Тень над футером */
+        }
+
+        @keyframes shadowAnimation {
+            from {
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            to {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        @keyframes backgroundAnimation {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 10px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="color: #fff; margin: 0;">Food Store</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% endif %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 МПТ. Сделано для МПТ</p>
+    </footer>
+</body>
+</html>

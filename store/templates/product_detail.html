@@ -1,0 +1,20 @@
+<!-- Ваш файл product_detail.html -->
+{% extends 'base_generic.html' %}
+
+{% block title %}{{ product.name }} - Product Details{% endblock %}
+
+{% block content %}
+    <h2>{{ product.name }}</h2>
+
+    <div style="max-width: 50%; margin-bottom: 20px;">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto;">
+        {% endif %}
+    </div>
+
+    <p>{{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+
+    <!-- Добавлена стилизованная кнопка "Назад" -->
+    <a href="javascript:history.back()" style="display: inline-block; padding: 10px 15px; background-color: #333; color: #fff; text-decoration: none; border-radius: 5px; transition: background-color 0.3s ease;">Назад</a>
+{% endblock %}

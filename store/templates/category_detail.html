@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }}</title>
+    <style>
+        /* Ваши стили */
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        h2 {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .product-card {
+            position: relative; /* Добавляем относительное позиционирование */
+            border: 1px solid #ddd;
+            margin: 10px;
+            max-width: 300px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image-container {
+            position: relative;
+        }
+
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .product-name {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin: 10px 0;
+        }
+
+        .product-name:hover {
+            color: #ff4500;
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .add-to-cart-container {
+            padding: 10px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .add-to-cart-form {
+            width: 100%;
+        }
+
+        .add-to-cart-form button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-to-cart-form button:hover {
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            font-size: 18px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #333;
+            padding: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .back-link:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .spark {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #ff4500;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            animation: sparkAnimation 0.5s ease-out forwards;
+        }
+
+        @keyframes sparkAnimation {
+            to {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        footer {
+            background-color: #333;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ category.name }}</h2>
+
+    <div class="product-container">
+        {% for product in products %}
+            <div class="product-card" onmouseover="showFollower(this)" onmouseout="hideFollower()">
+                <div class="product-image-container">
+                    <a href="{% url 'product_detail' category_id=category.id product_id=product.id %}">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    </a>
+                </div>
+                <a href="{% url 'product_detail' category_id=category.id product_id=product.id %}" class="product-name">{{ product.name }}</a>
+                <p class="product-price">Price: ${{ product.price }}</p>
+                <div class="add-to-cart-container">
+                    <form method="post" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
+                        {% csrf_token %}
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a class="back-link" href="javascript:history.back()">Назад</a>
+
+    <div class="spark"></div>
+
+    <footer>
+        <p>&copy; 2023 МПТ. Сделано для МПТ</p>
+    </footer>
+
+    <script>
+        function showFollower(card) {
+            const spark = document.querySelector('.spark');
+            const cardRect = card.getBoundingClientRect();
+            const centerX = cardRect.left + cardRect.width / 2;
+            const centerY = cardRect.top + cardRect.height / 2;
+
+            spark.style.left = centerX + 'px';
+            spark.style.top = centerY + 'px';
+            spark.style.opacity = '1';
+        }
+
+        function hideFollower() {
+            const spark = document.querySelector('.spark');
+            spark.style.opacity = '0';
+        }
+    </script>
+</body>
+</html>

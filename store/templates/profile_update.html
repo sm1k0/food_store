@@ -1,0 +1,89 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+    <style>
+        /* Дополнительные стили для страницы обновления профиля */
+        .update-profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease; /* Эффект при наведении */
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        h1 {
+            margin: 0; /* Убираем отступ сверху у заголовка */
+            color: #333; /* Цвет текста */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Делаем меню горизонтальным */
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ff4500;
+        }
+
+        h2 {
+            color: #333;
+        }
+    </style>
+
+    <div class="update-profile-container">
+        <header>
+            <h1>Food Store</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}" style="color: #e74c3c;">Logout</a></li> <!-- Подчеркиваем активный пункт меню -->
+                    {% endif %}
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <h2>Update Your Profile</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 МПТ. Сделано для МПТ</p>
+    </footer>
+{% endblock %}

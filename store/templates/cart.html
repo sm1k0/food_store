@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+            font-family: 'Arial', sans-serif;
+        }
+
+        header {
+            background-color: #333;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ff4500;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            animation: shadowAnimation 0.5s ease-in-out;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        ul li ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        ul li ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        img {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff4500;
+        }
+
+        p {
+            color: #333;
+        }
+
+        footer {
+            background-color: #333;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            margin-top: auto;
+        }
+
+        @media screen and (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+
+        @keyframes shadowAnimation {
+            from {
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            to {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}" style="text-decoration: none; color: #fff;">Магазин</a></li>
+                <li><a href="{% url 'profile' %}" style="text-decoration: none; color: #fff;">Профиль</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Your Cart</h2>
+
+        {% if orders %}
+            <ul>
+                {% for order in orders %}
+                    <li>
+                        <strong>Order #{{ order.id }} - Total: ${{ order.total_price }}</strong>
+                        <ul>
+                            {% for product in order.products.all %}
+                                <li>
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="50">
+                                    {{ product.name }} - ${{ product.price }}
+                                    <form method="post" action="{% url 'remove_from_cart' order.id product.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Remove from Cart</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" onclick="alert('Order placed!')">Checkout</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Your cart is empty. Please add something to your cart.</p>
+        {% endif %}
+
+        <button type="button" onclick="goBack()">Back</button>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 МПТ. Сделано для МПТ</p>
+    </footer>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

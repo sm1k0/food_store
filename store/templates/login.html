@@ -1,0 +1,78 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<style>
+  /* Дополнительные стили для формы входа */
+  .login-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    animation: shadowAnimation 0.5s ease-in-out;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .btn-login {
+    background-color: #3498db;
+    color: #fff;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-login:hover {
+    background-color: #217dbb;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  p {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: #217dbb;
+  }
+
+  @keyframes shadowAnimation {
+    from {
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+    to {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+</style>
+
+<div class="login-form">
+  <h2 style="text-align: center;">Login</h2>
+  <form method="post" action="{% url 'login' %}" class="login-form">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+    </div>
+    <div class="form-group">
+      {{ form.password.label_tag }}
+      {{ form.password }}
+    </div>
+    <button type="submit" class="btn-login">Login</button>
+  </form>
+  <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+</div>
+{% endblock %}

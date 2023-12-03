@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h2 {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            margin: 0;
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #007BFF;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .category-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .category-button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            background-color: #f0f0f0;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome to the Food Store</h2>
+
+    {% if user.is_authenticated %}
+        <p>Hello, <span style="font-weight: bold;">{{ user.username }}</span>!</p>
+        <p>
+            <a href="{% url 'logout' %}">Logout</a> |
+            <a href="{% url 'profile' %}">Profile</a>
+        </p>
+    {% else %}
+        <p>
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'register' %}">Register</a>
+        </p>
+    {% endif %}
+
+    <ul>
+        {% for category in categories %}
+            <li><a class="category-button" href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <footer>
+        <p>&copy; 2023 МПТ. Сделано для МПТ</p>
+    </footer>
+</body>
+</html>
